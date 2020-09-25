@@ -1,0 +1,2 @@
+- Save your favorites stops
+- Display one main stops

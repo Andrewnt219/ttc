@@ -1,6 +1,6 @@
 import { Mode } from "@src/contexts/ThemeContext.context";
 import { useEffect, useState } from "react";
-import { LocalStorageKeys } from "@src/constants/localStorage.constant";
+import { LocalStorageKeys } from "@src/assets/constants/localStorage.constant";
 
 type Returns = [
   currentMode: Mode | null,
