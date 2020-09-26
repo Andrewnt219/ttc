@@ -1,2 +1,3 @@
 - Save your favorites stops
 - Display one main stops
+- Display stop and minutes left in document title

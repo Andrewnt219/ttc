@@ -1,10 +1,17 @@
 import Appbar from "@src/components/Appbar";
+import { useFetch } from "@src/utils";
 import { useToggleDarkMode } from "@src/utils/hooks/useToggleDarkMode.hook";
 import { ReactNode } from "react";
+import { TtcRss } from "ttc";
+
 import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
+  const serviceAlerts = useFetch<TtcRss[]>("/api/serviceAlerts");
+  const news = useFetch<TtcRss[]>("/api/news");
+  const moves = useFetch<TtcRss[]>("/api/moves");
+  const subwayClosures = useFetch<TtcRss[]>("/api/subwayClosures");
 
   return (
     <Div>
