@@ -6,11 +6,12 @@ import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
-  const { getRouteListXml } = useTtcXml();
+  const { getRouteListXml, getRouteConfigXml } = useTtcXml();
 
   useEffect(() => {
-    getRouteListXml().then((data) => console.log(data));
-  }, [getRouteListXml]);
+    getRouteListXml().then((res) => console.log(res.data));
+    getRouteConfigXml("39").then((res) => console.log(res.data));
+  }, [getRouteConfigXml, getRouteListXml]);
 
   return (
     <Div>

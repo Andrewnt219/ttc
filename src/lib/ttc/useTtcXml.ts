@@ -1,35 +1,32 @@
+import { ErrorResponse } from "api";
 import Axios, { AxiosError } from "axios";
 import { useCallback } from "react";
 import { RouteListXml, RouteConfigXml } from "ttc";
-import { xml2js, Options } from "xml-js";
-
-const XML2JS_CONFIG: Options.XML2JS = {
-  compact: true,
-};
-const parser = (xml: string) => xml2js(xml, XML2JS_CONFIG);
 
 export const useTtcXml = () => {
   const getRouteListXml = useCallback(async () => {
     try {
-      const { data } = await Axios.get<string>(
-        "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
-      );
+      const { data } = await Axios.get<RouteListXml>("/api/routeList");
 
-      return parser(data) as RouteListXml;
+      return { data, errorMessage: undefined };
     } catch (error) {
-      console.error((error as AxiosError).message);
+      const errorMessage = (error as AxiosError<ErrorResponse>).response?.data
+        .message;
+      return { data: null, errorMessage };
     }
   }, []);
 
   const getRouteConfigXml = useCallback(async (routeTag: string) => {
     try {
-      const { data } = await Axios.get<string>(
-        `http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc&r=${routeTag}`
+      const { data } = await Axios.get<RouteConfigXml>(
+        `/api/routeConfig?r=${routeTag}`
       );
 
-      return parser(data) as RouteConfigXml;
+      return { data, errorMessage: undefined };
     } catch (error) {
-      console.error((error as AxiosError).message);
+      const errorMessage = (error as AxiosError<ErrorResponse>).response?.data
+        .message;
+      return { data: null, errorMessage };
     }
   }, []);
 
