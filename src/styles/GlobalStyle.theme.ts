@@ -134,12 +134,16 @@ textarea {
   background: transparent;
 }
 
+button {
+  :hover, :focus {
+    outline: none;
+  }
+}
 
 #__next {
   background: var(--primary-color);
-  transition: all 1000ms ease;
+  transition: all ${theme`transitionDuration.theme`} ease;
   position: relative;
-
 }
 
 .no-scroll {

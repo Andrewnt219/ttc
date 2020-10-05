@@ -1,17 +1,16 @@
 import Appbar from "@src/components/Appbar";
-import { useFetch } from "@src/utils";
+import { useTtcXml } from "@src/lib/ttc";
 import { useToggleDarkMode } from "@src/utils/hooks/useToggleDarkMode.hook";
-import { ReactNode } from "react";
-import { TtcRss } from "ttc";
-
+import { ReactNode, useEffect } from "react";
 import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
-  const serviceAlerts = useFetch<TtcRss[]>("/api/serviceAlerts");
-  const news = useFetch<TtcRss[]>("/api/news");
-  const moves = useFetch<TtcRss[]>("/api/moves");
-  const subwayClosures = useFetch<TtcRss[]>("/api/subwayClosures");
+  const { getRouteListXml } = useTtcXml();
+
+  useEffect(() => {
+    getRouteListXml().then((data) => console.log(data));
+  }, [getRouteListXml]);
 
   return (
     <Div>
