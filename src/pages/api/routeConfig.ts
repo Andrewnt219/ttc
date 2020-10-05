@@ -25,7 +25,7 @@ export default async (
       return res.status(200).json(parsedData);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: "Internal Error!" });
+      return res.status(500).json({ message: "Cannot get route config!" });
     }
   }
 };

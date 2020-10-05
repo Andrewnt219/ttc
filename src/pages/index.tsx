@@ -1,6 +1,8 @@
 import Appbar from "@src/components/Appbar";
 import { useTtcXml } from "@src/lib/ttc";
 import { useToggleDarkMode } from "@src/utils/hooks/useToggleDarkMode.hook";
+import { ErrorResponse } from "api";
+import { AxiosError } from "axios";
 import { ReactNode, useEffect } from "react";
 import tw, { styled } from "twin.macro";
 
@@ -9,8 +11,16 @@ export default function Home(): ReactNode {
   const { getRouteListXml, getRouteConfigXml } = useTtcXml();
 
   useEffect(() => {
-    getRouteListXml().then((res) => console.log(res.data));
-    getRouteConfigXml("39").then((res) => console.log(res.data));
+    getRouteListXml()
+      .then((res) => console.log(res.data))
+      .catch((error) =>
+        console.log((error as AxiosError<ErrorResponse>).response?.data.message)
+      );
+    getRouteConfigXml("39")
+      .then((res) => console.log(res.data))
+      .catch((error) =>
+        console.log((error as AxiosError<ErrorResponse>).response?.data.message)
+      );
   }, [getRouteConfigXml, getRouteListXml]);
 
   return (
