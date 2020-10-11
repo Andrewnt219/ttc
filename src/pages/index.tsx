@@ -2,26 +2,28 @@ import Appbar from "@src/components/Appbar";
 import { useTtcXml } from "@src/lib/ttc";
 import { useToggleDarkMode } from "@src/utils/hooks/useToggleDarkMode.hook";
 import { ErrorResponse } from "api";
-import { AxiosError } from "axios";
+import Axios, { AxiosError } from "axios";
 import { ReactNode, useEffect } from "react";
 import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
-  const { getRouteListXml, getRouteConfigXml } = useTtcXml();
+  const { getRouteListXml, getRouteConfigXml, getPredictions } = useTtcXml();
 
   useEffect(() => {
-    getRouteListXml()
-      .then((res) => console.log(res.data))
-      .catch((error) =>
-        console.log((error as AxiosError<ErrorResponse>).response?.data.message)
-      );
-    getRouteConfigXml("39")
-      .then((res) => console.log(res.data))
-      .catch((error) =>
-        console.log((error as AxiosError<ErrorResponse>).response?.data.message)
-      );
-  }, [getRouteConfigXml, getRouteListXml]);
+    getPredictions({stopId: "39"}).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
+    
+    // getRouteListXml()
+    //   .then((res) => console.log(res.data))
+    //   .catch((error) =>
+    //     console.log((error as AxiosError<ErrorResponse>).response?.data.message)
+    //   );
+    // getRouteConfigXml("39")
+    //   .then((res) => console.log(res.data))
+    //   .catch((error) =>
+    //     console.log((error as AxiosError<ErrorResponse>).response?.data.message)
+    //   );
+  }, [getRouteConfigXml, getRouteListXml, getPredictions]);
 
   return (
     <Div>
