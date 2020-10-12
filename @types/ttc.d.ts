@@ -24,6 +24,20 @@ declare module "ttc" {
     };
   };
 
+  type ErrorXml = XmlResponse & {
+    body: {
+      Error: {
+        _attributes: {
+          // "false"
+          shouldRetry: string;
+        };
+
+        // "↵  "command" parameter must be specified in query string↵"
+        _text: string;
+      };
+    };
+  };
+
   /* ---------------------------- Command routeList --------------------------- */
   // E.g http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc
 
@@ -131,6 +145,9 @@ declare module "ttc" {
       };
     };
   };
+
+  /* ------------------------------- Predictions ------------------------------ */
+  // E.g.http://webservices.nextbus.com/service/publicXMLFeed?predictions&a=ttc&stopId=39
 
   type PredictionsParameters = {
     command: "predictions";
