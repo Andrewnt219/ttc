@@ -14,6 +14,8 @@ export default async (
   res: NextApiResponse<ErrorResponse | RouteConfigXml>
 ): Promise<void> => {
   if (req.method === "GET") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
     try {
       const { r } = req.query;
       const { data } = await Axios.get<string>(

@@ -133,13 +133,13 @@ declare module "ttc" {
   };
 
   type PredictionsParameters = {
-    command: "predictions",
-    a: "ttc",
-    stopId: string,
-    routeTag?: string,
-    useShortTitles?: true,
-    r?: string    
-  }
+    command: "predictions";
+    a: "ttc";
+    stopId: string;
+    routeTag?: string;
+    useShortTitles?: true;
+    r?: string;
+  };
 
   type PredictionsXml = XmlResponse & {
     body: {
@@ -150,69 +150,68 @@ declare module "ttc" {
               // Specifies the block number assigned to the vehicle as defined in
               // the configuration data.
               // "26_30_10"
-              block: string,
+              block: string;
 
               // By using the branch information in the User Interface the passengers can see if a prediction is for a
               // bus that is going on their desired branch.
               // "26"
-              branch: string,
+              branch: string;
 
-              // Specifies the ID of the direction for the stop that the prediction is for 
+              // Specifies the ID of the direction for the stop that the prediction is for
               // "26_0_26"
-              dirTag: string,
+              dirTag: string;
               // "1602385905104"
-              epochTime: string,
+              epochTime: string;
 
               // If it is set to true then the prediction is for the
               // departure time. Otherwise the prediction is for an arrival time
               // "false"
-              isDeparture: string,
+              isDeparture: string;
 
               // "4"
-              minutes: string,
+              minutes: string;
 
               // "265"
-              seconds: string,
+              seconds: string;
 
               // Specifies the ID of the trip for when the vehicle will be arriving at the stop,
               // "40680981"
-              tripTag: string,
+              tripTag: string;
 
               // "1104"
-              vehicle: string
+              vehicle: string;
 
               // affectedByLayover
-            }
-          }[],
+            };
+          }[];
           _attributes: {
             // "East - 26 Dupont towards St George Station"
-            title: string
-          }
-
-        }
+            title: string;
+          };
+        };
         _attributes: {
           // The name of the agency to be displayed to passenger.
           // "Toronto Transit Commission"
-          agencyTitle: string,
+          agencyTitle: string;
 
           // Identifier for the route
           // "26"
-          routeTag: string,
+          routeTag: string;
 
           // Title of the route to be displayed to passenger
           // "26-Dupont"
-          routeTitle: string,
+          routeTitle: string;
 
           // "3402"
-          stopTag: string,
+          stopTag: string;
 
           // Title of the stop to be displayed to passenger.
           // "Annette St At Medland St"
-          stopTitle: string,
-          // dirTitleBecauseNoPredictions
-        } ,
+          stopTitle: string;
 
-      }
-    }
-   }
+          // dirTitleBecauseNoPredictions
+        };
+      };
+    };
+  };
 }

@@ -15,27 +15,36 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse<ErrorResponse | PredictionsXml>
 ): Promise<void> => {
-
   if (req.method === "GET") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
 
     try {
-        const command = "predictions";
-        const a = "ttc";
-      const {stopId, r, routeTag, useShortTitles} = (req.query as unknown) as PredictionsParameters;
+      const command = "predictions";
+      const a = "ttc";
+      const {
+        stopId,
+        r,
+        routeTag,
+        useShortTitles,
+      } = (req.query as unknown) as PredictionsParameters;
 
-      console.log(`http://webservices.nextbus.com/service/publicXMLFeed${createQueryString(command, a, stopId, r, routeTag, ''+useShortTitles)}` );
       const { data } = await Axios.get<string>(
-        `http://webservices.nextbus.com/service/publicXMLFeed${createQueryString(command, a, stopId, r, routeTag, ''+useShortTitles)}` 
+        `http://webservices.nextbus.com/service/publicXMLFeed${createQueryString(
+          command,
+          a,
+          stopId,
+          r,
+          routeTag,
+          "" + useShortTitles
+        )}`
       );
 
       const parsedData = parser(data) as PredictionsXml;
 
       return res.status(200).json(parsedData);
     } catch (error) {
-
       console.error(error);
       return res.status(500).json({ message: "Cannot get predictions!" });
     }
   }
 };
-
