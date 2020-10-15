@@ -1,12 +1,14 @@
-import { createQueryString } from '@src/utils';
 import Axios from "axios";
 import { useCallback } from "react";
-import { RouteListXml, RouteConfigXml, PredictionsParameters } from "ttc";
+import {
+  RouteListXml,
+  RouteConfigXml,
+  PredictionsParameters,
+  PredictionsXml,
+} from "ttc";
+import urlcat from "urlcat";
 
 export const useTtcXml = () => {
-
-
-
   const getRouteListXml = useCallback(async () => {
     return Axios.get<RouteListXml>("/api/routeList");
   }, []);
@@ -15,9 +17,24 @@ export const useTtcXml = () => {
     return Axios.get<RouteConfigXml>(`/api/routeConfig?r=${routeTag}`);
   }, []);
 
-  const getPredictions = useCallback(async ({stopId, routeTag,r,useShortTitles} : Omit<PredictionsParameters, "command" | "a">) => {
-    return Axios.get<RouteListXml>(`/api/predictions${createQueryString(stopId, routeTag,r, ''+useShortTitles)}`);
-  }, []);
+  const getPredictions = useCallback(
+    async ({
+      stopId,
+      routeTag,
+      r,
+      useShortTitles,
+    }: Omit<PredictionsParameters, "command" | "a">) => {
+      const url = urlcat("", "/api/predictions", {
+        stopId,
+        routeTag,
+        r,
+        useShortTitles,
+      });
+
+      return Axios.get<PredictionsXml>(url);
+    },
+    []
+  );
 
   return { getRouteConfigXml, getRouteListXml, getPredictions };
 };
