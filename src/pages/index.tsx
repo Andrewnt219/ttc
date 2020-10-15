@@ -11,7 +11,7 @@ export default function Home(): ReactNode {
   const { getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml } = useTtcXml();
 
   useEffect(() => {
-    getPredictionsForMultiStops({stops: [["39", "14211"], ["60", "3041"]]}).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
+    getPredictionsForMultiStops([["39", "14211"], ["60", "3041"]]).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
 
     // getPredictions({stopId: "39"}).then(res => console.log(res.data));
     // getRouteListXml()

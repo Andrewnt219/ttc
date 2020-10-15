@@ -244,7 +244,7 @@ declare module "ttc" {
 
   type PredictionsForMultiStopsParameters = {
     // multiple stops
-    stops: [stopTag: string, routeId: string][];
+    stops: string[];
 
     // agency
     a: string;
