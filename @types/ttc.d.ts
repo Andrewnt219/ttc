@@ -43,7 +43,16 @@ declare module "ttc" {
     | "routeList"
     | "routeConfig"
     | "predictions"
-    | "predictionsForMultiStops";
+    | "predictionsForMultiStops"
+    | "schedule"
+    | "messages"
+    | "vehicleLocations"
+    | "vehicleLocation";
+
+  type Parameters = {
+    command: Commands;
+    a: "ttc";
+  };
 
   /* ---------------------------- Command routeList --------------------------- */
   // E.g http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc
@@ -158,14 +167,13 @@ declare module "ttc" {
 
   type Prediction = {
     _attributes: {
-      // Specifies the block number assigned to the vehicle as defined in
-      // the configuration data.
+      // Specifies the block number assigned to the vehicle as defined in the configuration data.
       // "26_30_10"
       block: string;
 
       // By using the branch information in the User Interface the passengers can see if a prediction is for a
       // bus that is going on their desired branch.
-      // "26"
+      // "107", "107A", "107B"
       branch: string;
 
       // Specifies the ID of the direction for the stop that the prediction is for
@@ -175,8 +183,8 @@ declare module "ttc" {
       // "1602385905104"
       epochTime: string;
 
-      // If it is set to true then the prediction is for the
-      // departure time. Otherwise the prediction is for an arrival time
+      // If it is set to "true" then the prediction is for the departure time
+      // Otherwise the prediction is for an arrival time
       // "false"
       isDeparture: string;
 
@@ -194,12 +202,20 @@ declare module "ttc" {
       vehicle: string;
 
       affectedByLayover?: string;
+
+      // May not be available for TTC
+      // This is useful for determining if a vehicle is stuck in traffic such that the
+      // predictions might not be as accurate
+      // "true"
+      delayed?: string;
+
+      // Not available for TTC
+      //isScheduleBased?: string;
     };
   };
 
-  type PredictionsParameters = {
+  type PredictionsParameters = Parameters & {
     command: "predictions";
-    a: "ttc";
     stopId: string;
     routeTag?: string;
     useShortTitles?: true;
@@ -236,21 +252,23 @@ declare module "ttc" {
           // "Annette St At Medland St"
           stopTitle: string;
 
-          // dirTitleBecauseNoPredictions
+          // Title of direction. This attribute is only provided if there are no predictions
+          dirTitleBecauseNoPredictions?: string;
         };
       };
     };
   };
 
-  type PredictionsForMultiStopsParameters = {
+  /* ------------------------ PredictionsForMultiStops ------------------------ */
+  // E.g:  http://webservices.nextbus.com/service/publicXMLFeed?command=predictionsForMultiStops&a=ttc&stops=39|14211&stops=60|3041
+
+  type PredictionsForMultiStopsParameters = Parameters & {
     // multiple stops
     stops: string[];
 
-    // agency
-    a: string;
-
     command: "predictionsForMultiStops";
   };
+
   type PredictionsForMultiStops = XmlResponse & {
     body: {
       predictions: {
@@ -283,6 +301,78 @@ declare module "ttc" {
           // "Steeles Ave West At Rossdean Dr"
           stopTitle: string;
         };
+      }[];
+    };
+  };
+
+  /* -------------------------------- schedule -------------------------------- */
+  // E.g. http://webservices.nextbus.com/service/publicXMLFeed?command=schedule&a=ttc&r=39
+
+  type ScheduleParameters = Parameters & {
+    command: "schedule";
+    r: string;
+  };
+
+  type ScheduleXml = XmlResponse & {
+    body: {
+      route: {
+        _attributes: {
+          // "East"
+          direction;
+
+          // name of the current schedule class, which may change with the seasons
+          // "ITP2020Oct"
+          scheduleClass;
+
+          // indicates service date(s) when the schedule applies,
+          // which may differ on weekdays, weekend days, and holidays.
+          // "THANKS" for thanksgiving?
+          serviceClass;
+
+          // routeTag
+          // "39"
+          tag;
+
+          // routeTitle
+          // "39-Finch East"
+          title;
+        };
+        header: {
+          stop: {
+            // stopTitle
+            // "Finch Station"
+            _text: string;
+
+            _attributes: {
+              // stopTag
+              // "14211"
+              tag: string;
+            };
+          }[];
+        };
+        tr: {
+          _attributes: {
+            // specifies the block number as defined in the configuration data.
+            // "39_2_20"
+            blockID: string;
+          };
+          stop: {
+            _attributes: {
+              // scheduled arrival as epoch time
+              // For trips where a vehicle does not serve the stop the epochTime is set to "-1" (and text is "--")
+              // "-1"
+              epochTime: string;
+
+              // 14211
+              tag: string;
+            };
+
+            // epochTime in HH:mm:ss format
+            // For trips where a vehicle does not serve the stop the format is "--" (and epochTime "-1")
+            // "05:00:00", "--"
+            _text: string;
+          }[];
+        }[];
       }[];
     };
   };

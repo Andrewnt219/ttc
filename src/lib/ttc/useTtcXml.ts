@@ -6,6 +6,7 @@ import {
   PredictionsParameters,
   PredictionsXml,
   PredictionsForMultiStops,
+  ScheduleXml,
 } from "ttc";
 import urlcat from "urlcat";
 
@@ -49,10 +50,15 @@ export const useTtcXml = () => {
     []
   );
 
+  const getSchedule = useCallback(async (routeTag: string) => {
+    return Axios.get<ScheduleXml>(`/api/schedule?r=${routeTag}`);
+  }, []);
+
   return {
     getRouteConfigXml,
     getRouteListXml,
     getPredictions,
     getPredictionsForMultiStops,
+    getSchedule,
   };
 };

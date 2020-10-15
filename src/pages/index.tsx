@@ -8,11 +8,12 @@ import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
-  const { getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml } = useTtcXml();
+  const { getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml, getSchedule } = useTtcXml();
 
+  // TODO: try to return the actual merror message from nextbus instead of made up one
   useEffect(() => {
-    getPredictionsForMultiStops([["39", "14211"], ["60", "3041"]]).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
-
+    // getPredictionsForMultiStops([["39", "14211"], ["60", "3041"]]).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
+    getSchedule("39").then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message))
     // getPredictions({stopId: "39"}).then(res => console.log(res.data));
     // getRouteListXml()
     //   .then((res) => console.log(res.data))
@@ -24,7 +25,7 @@ export default function Home(): ReactNode {
     //   .catch((error) =>
     //     console.log((error as AxiosError<ErrorResponse>).response?.data.message)
     //   );
-  }, [getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml]);
+  }, [getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml, getSchedule]);
 
   return (
     <Div>

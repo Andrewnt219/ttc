@@ -4,6 +4,7 @@ import { RouteListXml } from "ttc";
 import { ErrorResponse } from "api";
 import { xml2jsParser } from "@src/utils";
 
+// TODO add RouteListParameters to type and api helper
 export default async (
   req: NextApiRequest,
   res: NextApiResponse<ErrorResponse | RouteListXml>

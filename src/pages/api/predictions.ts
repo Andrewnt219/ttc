@@ -19,12 +19,13 @@ export default async (
         useShortTitles,
       } = (req.query as unknown) as PredictionsParameters;
 
-      const fetchUrl = createNextBusApi({
+      const fetchUrl = createNextBusApi<PredictionsParameters>({
         command: "predictions",
         stopId,
         r,
         routeTag,
         useShortTitles,
+        a: "ttc",
       });
 
       const { data } = await Axios.get<string>(fetchUrl);
