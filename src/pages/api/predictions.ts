@@ -2,7 +2,7 @@ import Axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { PredictionsXml, PredictionsParameters } from "ttc";
 import { ErrorResponse } from "api";
-import { createNextBusApi, xml2jsParser } from "@src/utils/helpers/api.helper";
+import { createNextBusApi, xml2jsParser } from "@src/utils";
 
 export default async (
   req: NextApiRequest,

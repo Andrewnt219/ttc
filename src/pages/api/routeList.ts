@@ -1,13 +1,8 @@
-import { Options, xml2js } from "xml-js";
-import Axios, { AxiosError } from "axios";
+import Axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { RouteListXml } from "ttc";
 import { ErrorResponse } from "api";
-
-const XML2JS_CONFIG: Options.XML2JS = {
-  compact: true,
-};
-const parser = (xml: string) => xml2js(xml, XML2JS_CONFIG);
+import { xml2jsParser } from "@src/utils";
 
 export default async (
   req: NextApiRequest,
@@ -21,7 +16,7 @@ export default async (
         "http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc"
       );
 
-      const parsedData = parser(data) as RouteListXml;
+      const parsedData = xml2jsParser(data) as RouteListXml;
 
       return res.status(200).json(parsedData);
     } catch (error) {

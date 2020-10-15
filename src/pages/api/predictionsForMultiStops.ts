@@ -5,7 +5,7 @@ import {
   PredictionsForMultiStopsParameters,
 } from "ttc";
 import { ErrorResponse } from "api";
-import { xml2jsParser } from "@src/utils/helpers/api.helper";
+import { xml2jsParser } from "@src/utils";
 import { NEXT_BUS_API, NEXT_BUS_URL } from "@src/assets/constants/api.constant";
 
 export default async (
@@ -39,7 +39,3 @@ export default async (
     }
   }
 };
-
-function test(stopsQuery: string): string[] {
-  stopsQuery.split(",");
-}
