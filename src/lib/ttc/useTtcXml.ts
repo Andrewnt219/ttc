@@ -5,6 +5,8 @@ import {
   RouteConfigXml,
   PredictionsParameters,
   PredictionsXml,
+  PredictionsForMultiStopsParameters,
+  PredictionsForMultiStops,
 } from "ttc";
 import urlcat from "urlcat";
 
@@ -36,5 +38,28 @@ export const useTtcXml = () => {
     []
   );
 
-  return { getRouteConfigXml, getRouteListXml, getPredictions };
+  const getPredictionsForMultiStops = useCallback(
+    async ({
+      stops,
+    }: Omit<PredictionsForMultiStopsParameters, "command" | "a">) => {
+      const query = stops.map((stop) => stop.join("|")).join("&stops=");
+
+      return Axios.get<PredictionsForMultiStops>(
+        `/api/predictionsForMultiStops`,
+        {
+          params: {
+            stops: query,
+          },
+        }
+      );
+    },
+    []
+  );
+
+  return {
+    getRouteConfigXml,
+    getRouteListXml,
+    getPredictions,
+    getPredictionsForMultiStops,
+  };
 };

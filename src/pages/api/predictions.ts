@@ -1,19 +1,8 @@
-import { Options, xml2js } from "xml-js";
 import Axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { PredictionsXml, PredictionsParameters } from "ttc";
 import { ErrorResponse } from "api";
-import urlcat from "urlcat";
-import {
-  QUERY_AGENCY_TAG,
-  NEXT_BUS_URL,
-  NEXT_BUS_API,
-} from "@src/assets/constants/api.constant";
-
-const XML2JS_CONFIG: Options.XML2JS = {
-  compact: true,
-};
-const parser = (xml: string) => xml2js(xml, XML2JS_CONFIG);
+import { createNextBusApi, xml2jsParser } from "@src/utils/helpers/api.helper";
 
 export default async (
   req: NextApiRequest,
@@ -23,8 +12,6 @@ export default async (
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     try {
-      const COMMAND = "predictions";
-
       const {
         stopId,
         r,
@@ -32,18 +19,17 @@ export default async (
         useShortTitles,
       } = (req.query as unknown) as PredictionsParameters;
 
-      const url = urlcat(NEXT_BUS_URL, NEXT_BUS_API, {
-        command: COMMAND,
-        a: QUERY_AGENCY_TAG,
+      const fetchUrl = createNextBusApi({
+        command: "predictions",
         stopId,
         r,
         routeTag,
         useShortTitles,
       });
 
-      const { data } = await Axios.get<string>(url);
+      const { data } = await Axios.get<string>(fetchUrl);
 
-      const parsedData = parser(data) as PredictionsXml;
+      const parsedData = xml2jsParser(data) as PredictionsXml;
 
       return res.status(200).json(parsedData);
     } catch (error) {

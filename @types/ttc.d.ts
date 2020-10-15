@@ -38,6 +38,13 @@ declare module "ttc" {
     };
   };
 
+  /* --------------------------- Available Commands --------------------------- */
+  type Commands =
+    | "routeList"
+    | "routeConfig"
+    | "predictions"
+    | "predictionsForMultiStops";
+
   /* ---------------------------- Command routeList --------------------------- */
   // E.g http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc
 
@@ -149,6 +156,47 @@ declare module "ttc" {
   /* ------------------------------- Predictions ------------------------------ */
   // E.g.http://webservices.nextbus.com/service/publicXMLFeed?predictions&a=ttc&stopId=39
 
+  type Prediction = {
+    _attributes: {
+      // Specifies the block number assigned to the vehicle as defined in
+      // the configuration data.
+      // "26_30_10"
+      block: string;
+
+      // By using the branch information in the User Interface the passengers can see if a prediction is for a
+      // bus that is going on their desired branch.
+      // "26"
+      branch: string;
+
+      // Specifies the ID of the direction for the stop that the prediction is for
+      // "26_0_26"
+      dirTag: string;
+
+      // "1602385905104"
+      epochTime: string;
+
+      // If it is set to true then the prediction is for the
+      // departure time. Otherwise the prediction is for an arrival time
+      // "false"
+      isDeparture: string;
+
+      // "4"
+      minutes: string;
+
+      // "265"
+      seconds: string;
+
+      // Specifies the ID of the trip for when the vehicle will be arriving at the stop,
+      // "40680981"
+      tripTag: string;
+
+      // "1104"
+      vehicle: string;
+
+      affectedByLayover?: string;
+    };
+  };
+
   type PredictionsParameters = {
     command: "predictions";
     a: "ttc";
@@ -162,45 +210,7 @@ declare module "ttc" {
     body: {
       predictions: {
         direction: {
-          prediction: {
-            _attributes: {
-              // Specifies the block number assigned to the vehicle as defined in
-              // the configuration data.
-              // "26_30_10"
-              block: string;
-
-              // By using the branch information in the User Interface the passengers can see if a prediction is for a
-              // bus that is going on their desired branch.
-              // "26"
-              branch: string;
-
-              // Specifies the ID of the direction for the stop that the prediction is for
-              // "26_0_26"
-              dirTag: string;
-              // "1602385905104"
-              epochTime: string;
-
-              // If it is set to true then the prediction is for the
-              // departure time. Otherwise the prediction is for an arrival time
-              // "false"
-              isDeparture: string;
-
-              // "4"
-              minutes: string;
-
-              // "265"
-              seconds: string;
-
-              // Specifies the ID of the trip for when the vehicle will be arriving at the stop,
-              // "40680981"
-              tripTag: string;
-
-              // "1104"
-              vehicle: string;
-
-              // affectedByLayover
-            };
-          }[];
+          prediction: Prediction[];
           _attributes: {
             // "East - 26 Dupont towards St George Station"
             title: string;
@@ -229,6 +239,51 @@ declare module "ttc" {
           // dirTitleBecauseNoPredictions
         };
       };
+    };
+  };
+
+  type PredictionsForMultiStopsParameters = {
+    // multiple stops
+    stops: [stopTag: string, routeId: string][];
+
+    // agency
+    a: string;
+
+    command: "predictionsForMultiStops";
+  };
+  type PredictionsForMultiStops = XmlResponse & {
+    body: {
+      predictions: {
+        direction: {
+          _attributes: {
+            // title of the requested route's direction
+            // "East - 60 Steeles West towards Finch Station via Pioneer Village Station"
+            title: string;
+          };
+          prediction: Prediction[];
+        };
+
+        _attributes: {
+          // "Toronto Transit Commission"
+          agencyTitle: string;
+
+          // The requested route's tag
+          // "60"
+          routeTag: string;
+
+          // The requested route's title
+          // "60-Steeles West"
+          routeTitle: string;
+
+          // The requested stop's tag
+          // "3041"
+          stopTag: string;
+
+          // The requested stop's title
+          // "Steeles Ave West At Rossdean Dr"
+          stopTitle: string;
+        };
+      }[];
     };
   };
 }
