@@ -1,11 +1,6 @@
 import Axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-  PredictionsXml,
-  PredictionsParameters,
-  ScheduleXml,
-  ScheduleParameters,
-} from "ttc";
+import { ScheduleXml, ScheduleParameters } from "ttc";
 import { ErrorResponse } from "api";
 import { createNextBusApi, xml2jsParser } from "@src/utils";
 

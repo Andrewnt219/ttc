@@ -1,13 +1,10 @@
-import {
-  NEXT_BUS_API,
-  NEXT_BUS_URL,
-  QUERY_AGENCY_TAG,
-} from "@src/assets/constants/api.constant";
+import { NEXT_BUS_API, NEXT_BUS_URL } from "@src/assets/constants/api.constant";
 import {
   Commands,
   PredictionsForMultiStopsParameters,
   PredictionsParameters,
   ScheduleParameters,
+  VehicleLocationsParameters,
 } from "ttc";
 import urlcat from "urlcat";
 import { Options, xml2js } from "xml-js";
@@ -23,7 +20,8 @@ export const xml2jsParser = (xml: string) => xml2js(xml, XML2JS_CONFIG);
 type ApiParameters =
   | PredictionsParameters
   | PredictionsForMultiStopsParameters
-  | ScheduleParameters;
+  | ScheduleParameters
+  | VehicleLocationsParameters;
 
 type NextBusQueryObject<T extends ApiParameters> = T & {
   command: Commands;

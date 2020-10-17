@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { useCallback } from "react";
+
 import {
   RouteListXml,
   RouteConfigXml,
@@ -7,6 +8,7 @@ import {
   PredictionsXml,
   PredictionsForMultiStops,
   ScheduleXml,
+  VehicleLocationsXml,
 } from "ttc";
 import urlcat from "urlcat";
 
@@ -54,11 +56,26 @@ export const useTtcXml = () => {
     return Axios.get<ScheduleXml>(`/api/schedule?r=${routeTag}`);
   }, []);
 
+  const getVehicleLocations = useCallback(
+    (routeTag: string, epochTimeInMs: string) => {
+      Axios.get<VehicleLocationsXml>(
+        `/api/vehicleLocations?r=${routeTag}&t=${epochTimeInMs}`
+      );
+
+      return () =>
+        Axios.get<VehicleLocationsXml>(
+          `/api/vehicleLocations?r=${routeTag}&t=${epochTimeInMs}`
+        );
+    },
+    []
+  );
+
   return {
     getRouteConfigXml,
     getRouteListXml,
     getPredictions,
     getPredictionsForMultiStops,
     getSchedule,
+    getVehicleLocations,
   };
 };
