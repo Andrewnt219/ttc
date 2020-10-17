@@ -376,4 +376,66 @@ declare module "ttc" {
       }[];
     };
   };
+
+  /* ---------------------------- VehicleLocations ---------------------------- */
+
+  type VehicleLocationsParameters = Parameters & {
+    command: "vehicleLocations";
+    r: string;
+    t: string;
+  };
+
+  type VehicleLocationsXml = XmlResponse & {
+    body: {
+      lastTime: {
+        _attributes: {
+          // The time that is used in the query
+          // "1602905936332"
+          time: string;
+        };
+      };
+
+      vehicle?: {
+        _attributes: {
+          // Specifies the ID of the direction that the vehicle is currently on
+          // "60_0_60B"
+          dirTag: string;
+
+          // Specifies the heading of the vehicle in degrees.
+          // Will be a value between 0 and 360.
+          // A negative value indicates that the heading is not currently available.
+          // "200"
+          heading: string;
+
+          // Vehicle id
+          // "3260"
+          id: string;
+
+          // Latitude of the vehicle
+          // "43.7803891"
+          lat: string;
+
+          // Lontitude of the vehicle
+          // "-79.4144694"
+          lon: string;
+
+          // Specifies whether the vehicle is currently predictable.
+          // "true"
+          predictable: string;
+
+          // The route tag used in the query
+          // "60"
+          routeTag: string;
+
+          // Seconds passed since the request time in query
+          // "7"
+          secsSinceReport: string;
+
+          // Specifies GPS based speed of vehicle.
+          // "13"
+          speedKmHr: string;
+        };
+      }[];
+    };
+  };
 }
