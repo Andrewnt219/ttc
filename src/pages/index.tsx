@@ -8,14 +8,16 @@ import tw, { styled } from "twin.macro";
 
 export default function Home(): ReactNode {
   const [, toggleDarkMode] = useToggleDarkMode();
-  const { getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml, getSchedule, getVehicleLocations } = useTtcXml();
+  const {getVehicleLocation, getPredictionsForMultiStops, getRouteListXml, getPredictions, getRouteConfigXml, getSchedule, getVehicleLocations } = useTtcXml();
 
   // TODO: try to return the actual merror message from nextbus instead of made up one
   useEffect(() => {
-    const callback = getVehicleLocations("60", new Date().getTime().toString());
-    setTimeout(() => {
-      callback().then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
-    }, 15000);
+    getVehicleLocation("3463").then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
+    
+    // const callback = getVehicleLocations(new Date().getTime().toString(), "60");
+    // setTimeout(() => {
+    //   callback().then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
+    // }, 15000);
     
     // getPredictionsForMultiStops([["39", "14211"], ["60", "3041"]]).then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message));
     // getSchedule("39").then(res => console.log(res.data)).catch(error => console.log((error as AxiosError<ErrorResponse>).response?.data.message))

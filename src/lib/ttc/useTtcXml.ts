@@ -9,20 +9,21 @@ import {
   PredictionsForMultiStops,
   ScheduleXml,
   VehicleLocationsXml,
+  VehicleLocationXml,
 } from "ttc";
 import urlcat from "urlcat";
 
 export const useTtcXml = () => {
-  const getRouteListXml = useCallback(async () => {
+  const getRouteListXml = useCallback(() => {
     return Axios.get<RouteListXml>("/api/routeList");
   }, []);
 
-  const getRouteConfigXml = useCallback(async (routeTag: string) => {
+  const getRouteConfigXml = useCallback((routeTag: string) => {
     return Axios.get<RouteConfigXml>(`/api/routeConfig?r=${routeTag}`);
   }, []);
 
   const getPredictions = useCallback(
-    async ({
+    ({
       stopId,
       routeTag,
       r,
@@ -41,7 +42,7 @@ export const useTtcXml = () => {
   );
 
   const getPredictionsForMultiStops = useCallback(
-    async (stops: [stopTag: string, routeId: string][]) => {
+    (stops: [stopTag: string, routeId: string][]) => {
       const stopsQuery = stops.map((stop) => stop.join("|")).join("&stops=");
 
       // NOTE Do NOT use axios params
@@ -52,12 +53,12 @@ export const useTtcXml = () => {
     []
   );
 
-  const getSchedule = useCallback(async (routeTag: string) => {
+  const getSchedule = useCallback((routeTag: string) => {
     return Axios.get<ScheduleXml>(`/api/schedule?r=${routeTag}`);
   }, []);
 
   const getVehicleLocations = useCallback(
-    (routeTag: string, epochTimeInMs: string) => {
+    (epochTimeInMs: string, routeTag?: string) => {
       Axios.get<VehicleLocationsXml>(
         `/api/vehicleLocations?r=${routeTag}&t=${epochTimeInMs}`
       );
@@ -70,7 +71,12 @@ export const useTtcXml = () => {
     []
   );
 
+  const getVehicleLocation = useCallback((vehicleId: string) => {
+    return Axios.get<VehicleLocationXml>(`/api/vehicleLocation?v=${vehicleId}`);
+  }, []);
+
   return {
+    getVehicleLocation,
     getRouteConfigXml,
     getRouteListXml,
     getPredictions,
