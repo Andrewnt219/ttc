@@ -21,10 +21,16 @@ export default async (
         t,
       });
 
-      console.log(fetchUrl);
       const { data } = await Axios.get<string>(fetchUrl);
 
       const parsedData = xml2jsParser(data) as VehicleLocationsXml;
+
+      if (!parsedData.body.vehicle) {
+        return res.status(200).json({
+          message:
+            "Getting all vehicles' locations. Please send the SAME request again after 10 seconds",
+        });
+      }
 
       return res.status(200).json(parsedData);
     } catch (error) {
