@@ -4,6 +4,7 @@ import {
   PredictionsForMultiStopsParameters,
   PredictionsParameters,
   ScheduleParameters,
+  VehicleLocationParameters,
   VehicleLocationsParameters,
 } from "ttc";
 import urlcat from "urlcat";
@@ -21,7 +22,8 @@ type ApiParameters =
   | PredictionsParameters
   | PredictionsForMultiStopsParameters
   | ScheduleParameters
-  | VehicleLocationsParameters;
+  | VehicleLocationsParameters
+  | VehicleLocationParameters;
 
 type NextBusQueryObject<T extends ApiParameters> = T & {
   command: Commands;
